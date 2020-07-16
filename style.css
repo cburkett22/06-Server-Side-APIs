@@ -1,0 +1,69 @@
+body {
+    background-image: url(images/weather.jpg);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+.jumbotron{
+    background: linear-gradient(to bottom right, rgb(17, 16, 85) , rgb(74, 76, 80));
+    opacity: 0.6;
+}
+
+.heading {
+    font-weight: 700;
+    text-align: center;
+    color: rgb(219, 219, 219);
+}
+
+.wrapper-1 {
+    width: 10%;
+    margin: 30px;
+    float: left;
+}
+
+.wrapper-2 {
+    width: 80%;
+    float: left;
+}
+
+.search {
+    width: 300px;
+}
+
+.city-card {
+    width: 40%;
+}
+
+#current-city {
+    border-style: solid;
+    width: 80%;
+    height: 300px;
+    float: right;
+    border-radius: 10px;
+    background: linear-gradient(to bottom right, rgb(17, 16, 85) , rgb(74, 76, 80));
+    opacity: 0.6;
+    color: rgb(219, 219, 219);
+}
+
+h2 {
+    margin: 20px;
+    font-weight: 500;
+}
+
+#forecast {
+    width: 80%;
+    height: 250px;
+    float: right;
+    border-radius: 10px;
+}
+
+.card {
+    display: inline-block;
+    width: 19%;
+    height: 200px;
+    background: linear-gradient(to bottom right, rgb(17, 16, 85) , rgb(74, 76, 80));
+    opacity: 0.6;
+    color: rgb(219, 219, 219);
+    font-size: 20px;
+}
