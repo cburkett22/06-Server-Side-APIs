@@ -20,6 +20,10 @@
         rel="stylesheet"
         href="style.css"
     />
+    <link
+        rel="icon"
+        href="images/sun.png"
+    />
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
     </script>
@@ -31,63 +35,48 @@
 
     <div class="wrapper-1">
         <div class="search input-group mb-3">
-            <input type="text" class="form-control" placeholder="Search for a City" aria-label="Recipient's username" aria-describedby="button-addon2">
+            <input id="search-input" type="text" class="form-control" placeholder="Search for a City">
             <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button" id="button-addon2"><i class="fa fa-search"></i></button>
+                <button class="search-btn btn btn-outline-secondary" type="button" id="button-addon2"><i class="fa fa-search"></i></button>
             </div>
         </div>
         <br>
         <div class="city-card" style="width: 18rem;">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">City</li>
-              <li class="list-group-item">City</li>
-              <li class="list-group-item">City</li>
-              <li class="list-group-item">City</li>
-              <li class="list-group-item">City</li>
-              <li class="list-group-item">City</li>
-              <li class="list-group-item">City</li>
-              <li class="list-group-item">City</li>
-            </ul>
+            <ul class="list-group list-group-flush">Recent Searches:</ul>
         </div>
     </div>
 
     <div class="wrapper-2">
         <div id="current-city">
-            <h2>Current City:</h2>
+            <h2 class="city-name"></h2>
         </div>
 
         <div id="forecast">
             <h2>5-Day Forcast:</h2>
             <div class="card">
-                <div class="card-body">
-                  Day 1
-                </div>
+                <div id="dayOne" class="card-body"></div>
             </div>
             <div class="card">
-                <div class="card-body">
-                  Day 2
-                </div>
+                <div id="dayTwo" class="card-body"></div>
             </div>
             <div class="card">
-                <div class="card-body">
-                  Day 3
-                </div>
+                <div id="dayThree" class="card-body"></div>
             </div>
             <div class="card">
-                <div class="card-body">
-                  Day 4
-                </div>
+                <div id="dayFour" class="card-body"></div>
             </div>
             <div class="card">
-                <div class="card-body">
-                  Day 5
-                </div>
+                <div id="dayFive" class="card-body"></div>
             </div>
         </div>
     </div>
     <br><br><br><br>
     
+    <footer class="footer">
+        <p style="font-family: sans-serif;font-size: 16px;text-align: center;">© Copyright 2020</p>
+    </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
