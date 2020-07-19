@@ -1,18 +1,33 @@
 $(document).ready(function() {
     let searchBtn = $(".search-btn");
 
-    $(searchBtn).on("click", function() {
+    $(searchBtn).on("click", function getWeather() {
+        forecastDates();
+
         // Recent Searches
         let list = $(".list-group");
         let city = $("#search-input").val();
         let recentSearch = $(`<li class='list-group-item'>${city}</li>`)
 
         list.append(recentSearch)
-        
+
+        $(recentSearch).on("click", function() {
+            alert("I've been clicked!");
+        });
+
+        // 5-Day Forecast
+        function forecastDates() {
+            $("#dayOne").text(moment().add(1, "day").format("MM/D/YY"));
+            $("#dayTwo").text(moment().add(2, "day").format("MM/D/YY"));
+            $("#dayThree").text(moment().add(3, "day").format("MM/D/YY"));
+            $("#dayFour").text(moment().add(4, "day").format("MM/D/YY"));
+            $("#dayFive").text(moment().add(5, "day").format("MM/D/YY"));
+        }
+
+        // First AJAX call to get current weather data
         let apiKey = "e18164696c4ada0b555895d5a320bc08";
         let queryURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`
     
-        // First AJAX call to get current weather data
         $.ajax({
             url: queryURL,
             method: "GET"
@@ -27,12 +42,11 @@ $(document).ready(function() {
             currentCityDiv.append(h2Name);
 
             // Icon
-            // let displayIcon = $("<img id='wicon' src='' alt='Weather icon'>");
-            // let icon = a.weather[0].icon;
-            // let iconURL = "http://openweathermap.org/img/w/" + icon + ".png";
+            let iconDiv = $(".city-name");
+            let icon = response.weather[0].icon;
+            let iconURL = `<img src="http://openweathermap.org/img/w/${icon}.png" alt="weather icon">`;
 
-            // $('#wicon').attr('src', iconURL);
-            // h2Name.append(displayIcon);
+            iconDiv.append(iconURL);
             
             // Temperature
             let tempK = response.main.temp;
@@ -53,67 +67,110 @@ $(document).ready(function() {
 
             currentCityDiv.append(pWind);
 
-            // Second AJAX call to get the UV Index
-            let latitude = response.coord.lat;
-            let longitude = response.coord.lon;
-            let uvURL = `http://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${latitude}&lon=${longitude}`
+            // AJAX calls to get the UV Index and future weather
+            let lat = response.coord.lat;
+            let lon = response.coord.lon;
+            let oneCallURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=&appid=${apiKey}`;
 
             $.ajax({
-                url: uvURL,
+                url: oneCallURL,
                 method: "GET"
             }).then(function(response) {
                 let currentCityDiv = $("#current-city");
-                let uvIndex = response.value
+                let uvIndex = response.current.uvi;
                 let pUv = $("<p class='todays-weather'>").text("UV Index: " + uvIndex);
     
                 currentCityDiv.append(pUv);
+
+                // Append the future weather conditions here
+
+                // Day One
+                let dayOneIcon = response.daily[1].weather[0].icon;
+                let iconOneURL = `<img src="http://openweathermap.org/img/w/${dayOneIcon}.png" alt="weather icon">`;
+
+                $("#dayOne").append(iconOneURL);
+
+                let dayOneTemp = response.daily[1].temp.day;
+                let oneF = ((dayOneTemp - 273.15) * 1.8) + 32;
+                let pTempOne = $("<p class='forecast-info'>").text(oneF.toFixed(2) + " °F");
+
+                $("#dayOne").append(pTempOne);
+
+                let dayOneHumid = response.daily[1].humidity;
+                let pHumidOne = $("<p class='forecast-info'>").text("Humidity: " + dayOneHumid + "%");
+
+                $("#dayOne").append(pHumidOne);
+
+                // Day Two
+                let dayTwoIcon = response.daily[2].weather[0].icon;
+                let iconTwoURL = `<img src="http://openweathermap.org/img/w/${dayTwoIcon}.png" alt="weather icon">`;
+
+                $("#dayTwo").append(iconTwoURL);
+
+                let dayTwoTemp = response.daily[2].temp.day;
+                let TwoF = ((dayTwoTemp - 273.15) * 1.8) + 32;
+                let pTempTwo = $("<p class='forecast-info'>").text(TwoF.toFixed(2) + " °F");
+
+                $("#dayTwo").append(pTempTwo);
+
+                let dayTwoHumid = response.daily[2].humidity;
+                let pHumidTwo = $("<p class='forecast-info'>").text("Humidity: " + dayTwoHumid + "%");
+
+                $("#dayTwo").append(pHumidTwo);
+
+                // Day Three
+                let dayThreeIcon = response.daily[3].weather[0].icon;
+                let iconThreeURL = `<img src="http://openweathermap.org/img/w/${dayThreeIcon}.png" alt="weather icon">`;
+
+                $("#dayThree").append(iconThreeURL);
+
+                let dayThreeTemp = response.daily[3].temp.day;
+                let ThreeF = ((dayThreeTemp - 273.15) * 1.8) + 32;
+                let pTempThree = $("<p class='forecast-info'>").text(ThreeF.toFixed(2) + " °F");
+
+                $("#dayThree").append(pTempThree);
+
+                let dayThreeHumid = response.daily[3].humidity;
+                let pHumidThree = $("<p class='forecast-info'>").text("Humidity: " + dayThreeHumid + "%");
+
+                $("#dayThree").append(pHumidThree);
+
+                // Day Four
+                let dayFourIcon = response.daily[4].weather[0].icon;
+                let iconFourURL = `<img src="http://openweathermap.org/img/w/${dayFourIcon}.png" alt="weather icon">`;
+
+                $("#dayFour").append(iconFourURL);
+
+                let dayFourTemp = response.daily[4].temp.day;
+                let FourF = ((dayFourTemp - 273.15) * 1.8) + 32;
+                let pTempFour = $("<p class='forecast-info'>").text(FourF.toFixed(2) + " °F");
+
+                $("#dayFour").append(pTempFour);
+
+                let dayFourHumid = response.daily[4].humidity;
+                let pHumidFour = $("<p class='forecast-info'>").text("Humidity: " + dayFourHumid + "%");
+
+                $("#dayFour").append(pHumidFour);
+
+                // Day Five
+                let dayFiveIcon = response.daily[5].weather[0].icon;
+                let iconFiveURL = `<img src="http://openweathermap.org/img/w/${dayFiveIcon}.png" alt="weather icon">`;
+
+                $("#dayFive").append(iconFiveURL);
+
+                let dayFiveTemp = response.daily[5].temp.day;
+                let FiveF = ((dayFiveTemp - 273.15) * 1.8) + 32;
+                let pTempFive = $("<p class='forecast-info'>").text(FiveF.toFixed(2) + " °F");
+
+                $("#dayFive").append(pTempFive);
+
+                let dayFiveHumid = response.daily[5].humidity;
+                let pHumidFive = $("<p class='forecast-info'>").text("Humidity: " + dayFiveHumid + "%");
+
+                $("#dayFive").append(pHumidFive);
             });
 
-            // 5-Day Forcast
-            let dayOneDiv = $("#dayOne");
-            let plusOne = moment(today).add(1, 'days');
-            let m1 = plusOne.format("M");
-            let d1 = plusOne.format("D");
-            let y1 = plusOne.format("YYYY");
-
-            dayOneDiv.append(m1 + "/" + d1 + "/" + y1);
-
-            let dayTwoDiv = $("#dayTwo");
-            let plusTwo = moment(today).add(2, 'days');
-            let m2 = plusTwo.format("M");
-            let d2 = plusTwo.format("D");
-            let y2 = plusTwo.format("YYYY");
-
-            dayTwoDiv.append(m2 + "/" + d2 + "/" + y2);
-
-            let dayThreeDiv = $("#dayThree");
-            let plusThree = moment(today).add(3, 'days');
-            let m3 = plusThree.format("M");
-            let d3 = plusThree.format("D");
-            let y3 = plusThree.format("YYYY");
-
-            dayThreeDiv.append(m3 + "/" + d3 + "/" + y3);
-
-            let dayFourDiv = $("#dayFour");
-            let plusFour = moment(today).add(4, 'days');
-            let m4 = plusFour.format("M");
-            let d4 = plusFour.format("D");
-            let y4 = plusFour.format("YYYY");
-
-            dayFourDiv.append(m4 + "/" + d4 + "/" + y4);
-
-            let dayFiveDiv = $("#dayFive");
-            let plusFive = moment(today).add(5, 'days');
-            let m5 = plusFive.format("M");
-            let d5 = plusFive.format("D");
-            let y5 = plusFive.format("YYYY");
-
-            dayFiveDiv.append(m5 + "/" + d5 + "/" + y5);
         });
-
-        
     });
-    
-
-
+    getWeather();
 });

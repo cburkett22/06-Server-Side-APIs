@@ -71,6 +71,10 @@ body {
     border-radius: 10px;
 }
 
+.forecast-info {
+    font-size: 15px;
+}
+
 .card {
     display: inline-block;
     width: 19%;
