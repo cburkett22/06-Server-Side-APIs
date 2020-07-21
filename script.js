@@ -5,13 +5,12 @@ $(document).ready(function() {
         forecastDates();
 
         // Recent Searches
-        let list = $(".list-group");
         let city = $("#search-input").val().trim();
         let firstLetter = city.charAt(0).toUpperCase()
         let string = city.slice(1);
         let recentSearch = $(`<li class='list-group-item'>${firstLetter + string}</li>`);
 
-        list.append(recentSearch);
+            $(".list-group").append(recentSearch);
 
         $(recentSearch).on("click", function() {
             alert("I've been clicked!");
@@ -19,11 +18,11 @@ $(document).ready(function() {
 
         // 5-Day Forecast
         function forecastDates() {
-            $("#dayOne").text(moment().add(1, "day").format("MM/D/YY"));
-            $("#dayTwo").text(moment().add(2, "day").format("MM/D/YY"));
-            $("#dayThree").text(moment().add(3, "day").format("MM/D/YY"));
-            $("#dayFour").text(moment().add(4, "day").format("MM/D/YY"));
-            $("#dayFive").text(moment().add(5, "day").format("MM/D/YY"));
+            $("#date1").text(moment().add(1, "day").format("MM/D/YY"));
+            $("#date2").text(moment().add(2, "day").format("MM/D/YY"));
+            $("#date3").text(moment().add(3, "day").format("MM/D/YY"));
+            $("#date4").text(moment().add(4, "day").format("MM/D/YY"));
+            $("#date5").text(moment().add(5, "day").format("MM/D/YY"));
         }
 
         // First AJAX call to get current weather data
@@ -34,40 +33,33 @@ $(document).ready(function() {
             url: queryURL,
             method: "GET"
         }).then(function(response) {
-            let currentCityDiv = $("#current-city");
-
-            // City name
+            // City name & date
             let cityName = response.name;
-            let today = moment();
-            let h2Name = $(".city-name").text(cityName + today.format(" (M/D/YYYY)"));
+            let date = moment();
 
-            currentCityDiv.html(h2Name);
+                $(".city-name").text(cityName + date.format(" (M/D/YYYY)"));
 
-            // // Icon
-            // let iconDiv = $(".city-name");
-            // let icon = response.weather[0].icon;
-            // let iconURL = `<img src="http://openweathermap.org/img/w/${icon}.png" alt="weather icon">`;
-
-            // iconDiv.html(iconURL);
+            // Icon
+            let icon = response.weather[0].icon;
+            let iconURL = `http://openweathermap.org/img/w/${icon}.png`;
             
-            // // Temperature
-            // let tempK = response.main.temp;
-            // let tempF = ((tempK - 273.15) * 1.8) + 32;
-            // let pTemp = $("<p class='todays-weather'>").text("Temperature: " + tempF.toFixed(2) + " °F");
+                $("#icon1").attr("src", iconURL);
 
-            // currentCityDiv.html(pTemp);
+            // Temperature
+            let tempK = response.main.temp;
+            let tempF = ((tempK - 273.15) * 1.8) + 32;
 
-            // // Humidity
-            // let humidity = response.main.humidity;
-            // let pHumid = $("<p class='todays-weather'>").text("Humidity: " + humidity + "%");
+                $(".temp").text("Temperature: " + tempF.toFixed(2) + " °F");
 
-            // currentCityDiv.html(pHumid);
+            // Humidity
+            let humidity = response.main.humidity;
 
-            // // Wind Speed
-            // let wind = response.wind.speed;
-            // let pWind = $("<p class='todays-weather'>").text("Wind Speed: " + wind + " MPH");
+                $(".humid").text("Humidity: " + humidity + "%");
 
-            // currentCityDiv.html(pWind);
+            // Wind Speed
+            let wind = response.wind.speed;
+
+                $(".wind-speed").text("Wind Speed: " + wind + " MPH");
 
             // AJAX calls to get the UV Index and future weather
             let lat = response.coord.lat;
@@ -78,98 +70,86 @@ $(document).ready(function() {
                 url: oneCallURL,
                 method: "GET"
             }).then(function(response) {
-                let currentCityDiv = $("#current-city");
                 let uvIndex = response.current.uvi;
-                let pUv = $("<p class='todays-weather'>").text("UV Index: " + uvIndex);
     
-                currentCityDiv.append(pUv);
+                $(".uv").text("UV Index: " + uvIndex);
 
-                // Append the future weather conditions here
+                // Add the future weather conditions here
 
                 // Day One
-                let dayOneIcon = response.daily[1].weather[0].icon;
-                let iconOneURL = `<img src="http://openweathermap.org/img/w/${dayOneIcon}.png" alt="weather icon">`;
+                let day1Icon = response.daily[1].weather[0].icon;
+                let icon1URL = `http://openweathermap.org/img/w/${day1Icon}.png`;
 
-                $("#dayOne").append(iconOneURL);
+                    $("#icon2").attr("src", icon1URL);
 
-                let dayOneTemp = response.daily[1].temp.day;
-                let oneF = ((dayOneTemp - 273.15) * 1.8) + 32;
-                let pTempOne = $("<p class='forecast-info'>").text(oneF.toFixed(2) + " °F");
+                let day1Temp = response.daily[1].temp.day;
+                let oneF = ((day1Temp - 273.15) * 1.8) + 32;
 
-                $("#dayOne").append(pTempOne);
+                    $(".temp1").text(oneF.toFixed(2) + " °F");
 
-                let dayOneHumid = response.daily[1].humidity;
-                let pHumidOne = $("<p class='forecast-info'>").text("Humidity: " + dayOneHumid + "%");
+                let day1Humid = response.daily[1].humidity;
 
-                $("#dayOne").append(pHumidOne);
+                    $(".humid1").text("Humidity: " + day1Humid + "%");
 
                 // Day Two
-                let dayTwoIcon = response.daily[2].weather[0].icon;
-                let iconTwoURL = `<img src="http://openweathermap.org/img/w/${dayTwoIcon}.png" alt="weather icon">`;
+                let day2Icon = response.daily[2].weather[0].icon;
+                let icon2URL = `http://openweathermap.org/img/w/${day2Icon}.png`;
 
-                $("#dayTwo").append(iconTwoURL);
+                    $("#icon3").attr("src", icon2URL);
 
-                let dayTwoTemp = response.daily[2].temp.day;
-                let TwoF = ((dayTwoTemp - 273.15) * 1.8) + 32;
-                let pTempTwo = $("<p class='forecast-info'>").text(TwoF.toFixed(2) + " °F");
+                let day2Temp = response.daily[2].temp.day;
+                let twoF = ((day2Temp - 273.15) * 1.8) + 32;
 
-                $("#dayTwo").append(pTempTwo);
+                    $(".temp2").text(twoF.toFixed(2) + " °F");
 
-                let dayTwoHumid = response.daily[2].humidity;
-                let pHumidTwo = $("<p class='forecast-info'>").text("Humidity: " + dayTwoHumid + "%");
+                let day2Humid = response.daily[2].humidity;
 
-                $("#dayTwo").append(pHumidTwo);
+                    $(".humid2").text("Humidity: " + day2Humid + "%");
 
                 // Day Three
-                let dayThreeIcon = response.daily[3].weather[0].icon;
-                let iconThreeURL = `<img src="http://openweathermap.org/img/w/${dayThreeIcon}.png" alt="weather icon">`;
+                let day3Icon = response.daily[3].weather[0].icon;
+                let icon3URL = `http://openweathermap.org/img/w/${day3Icon}.png`;
 
-                $("#dayThree").append(iconThreeURL);
+                    $("#icon4").attr("src", icon3URL);
 
-                let dayThreeTemp = response.daily[3].temp.day;
-                let ThreeF = ((dayThreeTemp - 273.15) * 1.8) + 32;
-                let pTempThree = $("<p class='forecast-info'>").text(ThreeF.toFixed(2) + " °F");
+                let day3Temp = response.daily[3].temp.day;
+                let threeF = ((day3Temp - 273.15) * 1.8) + 32;
 
-                $("#dayThree").append(pTempThree);
+                    $(".temp3").text(threeF.toFixed(2) + " °F");
 
-                let dayThreeHumid = response.daily[3].humidity;
-                let pHumidThree = $("<p class='forecast-info'>").text("Humidity: " + dayThreeHumid + "%");
+                let day3Humid = response.daily[3].humidity;
 
-                $("#dayThree").append(pHumidThree);
+                    $(".humid3").text("Humidity: " + day3Humid + "%");
 
                 // Day Four
-                let dayFourIcon = response.daily[4].weather[0].icon;
-                let iconFourURL = `<img src="http://openweathermap.org/img/w/${dayFourIcon}.png" alt="weather icon">`;
+                let day4Icon = response.daily[4].weather[0].icon;
+                let icon4URL = `http://openweathermap.org/img/w/${day4Icon}.png`;
 
-                $("#dayFour").append(iconFourURL);
+                    $("#icon5").attr("src", icon4URL);
 
-                let dayFourTemp = response.daily[4].temp.day;
-                let FourF = ((dayFourTemp - 273.15) * 1.8) + 32;
-                let pTempFour = $("<p class='forecast-info'>").text(FourF.toFixed(2) + " °F");
+                let day4Temp = response.daily[4].temp.day;
+                let fourF = ((day4Temp - 273.15) * 1.8) + 32;
 
-                $("#dayFour").append(pTempFour);
+                    $(".temp4").text(fourF.toFixed(2) + " °F");
 
-                let dayFourHumid = response.daily[4].humidity;
-                let pHumidFour = $("<p class='forecast-info'>").text("Humidity: " + dayFourHumid + "%");
+                let day4Humid = response.daily[4].humidity;
 
-                $("#dayFour").append(pHumidFour);
+                    $(".humid4").text("Humidity: " + day4Humid + "%");
 
                 // Day Five
-                let dayFiveIcon = response.daily[5].weather[0].icon;
-                let iconFiveURL = `<img src="http://openweathermap.org/img/w/${dayFiveIcon}.png" alt="weather icon">`;
+                let day5Icon = response.daily[5].weather[0].icon;
+                let icon5URL = `http://openweathermap.org/img/w/${day5Icon}.png`;
 
-                $("#dayFive").append(iconFiveURL);
+                    $("#icon6").attr("src", icon5URL);
 
-                let dayFiveTemp = response.daily[5].temp.day;
-                let FiveF = ((dayFiveTemp - 273.15) * 1.8) + 32;
-                let pTempFive = $("<p class='forecast-info'>").text(FiveF.toFixed(2) + " °F");
+                let day5Temp = response.daily[5].temp.day;
+                let fiveF = ((day5Temp - 273.15) * 1.8) + 32;
 
-                $("#dayFive").append(pTempFive);
+                    $(".temp5").text(fiveF.toFixed(2) + " °F");
 
-                let dayFiveHumid = response.daily[5].humidity;
-                let pHumidFive = $("<p class='forecast-info'>").text("Humidity: " + dayFiveHumid + "%");
+                let day5Humid = response.daily[5].humidity;
 
-                $("#dayFive").append(pHumidFive);
+                    $(".humid5").text("Humidity: " + day5Humid + "%");
             });
 
         });
