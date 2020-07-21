@@ -25,12 +25,12 @@ body {
 }
 
 .wrapper-2 {
-    width: 80%;
+    min-width: 80%;
     float: left;
 }
 
 .search {
-    width: 300px;
+    min-width: 300px;
     opacity: 0.8;
 }
 

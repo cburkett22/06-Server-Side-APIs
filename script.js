@@ -1,15 +1,17 @@
 $(document).ready(function() {
     let searchBtn = $(".search-btn");
 
-    $(searchBtn).on("click", function getWeather() {
+    $(searchBtn).on("click", function() {
         forecastDates();
 
         // Recent Searches
         let list = $(".list-group");
-        let city = $("#search-input").val();
-        let recentSearch = $(`<li class='list-group-item'>${city}</li>`)
+        let city = $("#search-input").val().trim();
+        let firstLetter = city.charAt(0).toUpperCase()
+        let string = city.slice(1);
+        let recentSearch = $(`<li class='list-group-item'>${firstLetter + string}</li>`);
 
-        list.append(recentSearch)
+        list.append(recentSearch);
 
         $(recentSearch).on("click", function() {
             alert("I've been clicked!");
@@ -39,33 +41,33 @@ $(document).ready(function() {
             let today = moment();
             let h2Name = $(".city-name").text(cityName + today.format(" (M/D/YYYY)"));
 
-            currentCityDiv.append(h2Name);
+            currentCityDiv.html(h2Name);
 
-            // Icon
-            let iconDiv = $(".city-name");
-            let icon = response.weather[0].icon;
-            let iconURL = `<img src="http://openweathermap.org/img/w/${icon}.png" alt="weather icon">`;
+            // // Icon
+            // let iconDiv = $(".city-name");
+            // let icon = response.weather[0].icon;
+            // let iconURL = `<img src="http://openweathermap.org/img/w/${icon}.png" alt="weather icon">`;
 
-            iconDiv.append(iconURL);
+            // iconDiv.html(iconURL);
             
-            // Temperature
-            let tempK = response.main.temp;
-            let tempF = ((tempK - 273.15) * 1.8) + 32;
-            let pTemp = $("<p class='todays-weather'>").text("Temperature: " + tempF.toFixed(2) + " °F");
+            // // Temperature
+            // let tempK = response.main.temp;
+            // let tempF = ((tempK - 273.15) * 1.8) + 32;
+            // let pTemp = $("<p class='todays-weather'>").text("Temperature: " + tempF.toFixed(2) + " °F");
 
-            currentCityDiv.append(pTemp);
+            // currentCityDiv.html(pTemp);
 
-            // Humidity
-            let humidity = response.main.humidity;
-            let pHumid = $("<p class='todays-weather'>").text("Humidity: " + humidity + "%");
+            // // Humidity
+            // let humidity = response.main.humidity;
+            // let pHumid = $("<p class='todays-weather'>").text("Humidity: " + humidity + "%");
 
-            currentCityDiv.append(pHumid);
+            // currentCityDiv.html(pHumid);
 
-            // Wind Speed
-            let wind = response.wind.speed;
-            let pWind = $("<p class='todays-weather'>").text("Wind Speed: " + wind + " MPH");
+            // // Wind Speed
+            // let wind = response.wind.speed;
+            // let pWind = $("<p class='todays-weather'>").text("Wind Speed: " + wind + " MPH");
 
-            currentCityDiv.append(pWind);
+            // currentCityDiv.html(pWind);
 
             // AJAX calls to get the UV Index and future weather
             let lat = response.coord.lat;
@@ -172,5 +174,4 @@ $(document).ready(function() {
 
         });
     });
-    getWeather();
 });
