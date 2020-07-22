@@ -6,10 +6,17 @@ body {
     overflow: auto;
 }
 
+hr {
+    width: 95%;
+    margin: auto;
+    border-top: 1px dotted;
+}
+
 .jumbotron{
     background: linear-gradient(to bottom right, rgb(17, 16, 85) , rgb(74, 76, 80));
     opacity: 0.8;
     height: 180px;
+    border-radius: 0px;
 }
 
 .heading {
@@ -32,6 +39,12 @@ body {
 .search {
     min-width: 300px;
     opacity: 0.8;
+}
+
+#history {
+    background: linear-gradient(to bottom right, rgb(179, 179, 185) , rgb(58, 37, 107));
+    padding: 5px;
+    font-weight: bolder;
 }
 
 .list-group {
@@ -68,7 +81,6 @@ body {
     width: 80%;
     height: 250px;
     float: right;
-
 }
 
 .card {
