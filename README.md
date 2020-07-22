@@ -16,5 +16,5 @@ SO THAT I can plan a trip accordingly
 
 ## Related Links
 
-GitHub: [Corey Burkett](https://github.com/cburkett22/06-Server-Side-APIs)
+GitHub: [Corey Burkett](https://github.com/cburkett22/06-Server-Side-APIs)\
 Project: [Weather Application](https://cburkett22.github.io/06-Server-Side-APIs/)
