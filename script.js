@@ -1,19 +1,26 @@
 $(document).ready(function() {
     let searchBtn = $(".search-btn");
+    let previousCity = JSON.parse(localStorage.getItem("weather"));
+    console.log(previousCity);
 
-    $(searchBtn).on("click", function() {
+    $(searchBtn).on("click", renderWeather)
+    function renderWeather(town){
         forecastDates();
 
         // Recent Searches
-        let city = $("#search-input").val().trim();
-        let firstLetter = city.charAt(0).toUpperCase()
+        let city = $("#search-input").val().trim() || town;
+        let firstLetter = city.charAt(0).toUpperCase();
         let string = city.slice(1);
-        let recentSearch = $(`<li class='list-group-item'>${firstLetter + string}</li>`);
+        let recentSearch = $(`<li id="${city}" class='list-group-item'>${firstLetter + string}</li>`);
+        previousCity = city;
 
             $(".list-group").append(recentSearch);
 
+        // Not able to click on recent search and populate data
         $(recentSearch).on("click", function() {
-            alert("I've been clicked!");
+            let cityId = $(this).attr("id");
+            let city = cityId;
+            renderWeather(city);
         });
 
         // 5-Day Forecast
@@ -73,8 +80,6 @@ $(document).ready(function() {
                 let uvIndex = response.current.uvi;
     
                 $(".uv").text("UV Index: " + uvIndex);
-
-                // Add the future weather conditions here
 
                 // Day One
                 let day1Icon = response.daily[1].weather[0].icon;
@@ -150,8 +155,20 @@ $(document).ready(function() {
                 let day5Humid = response.daily[5].humidity;
 
                     $(".humid5").text("Humidity: " + day5Humid + "%");
+
+                // Local Storage
+                let cityStats = {
+                    name: cityName,
+                    currentIcon: iconURL,
+                    currentTemp: tempF
+                };
+
+                localStorage.setItem("weather", JSON.stringify(cityStats));
+
             });
 
         });
-    });
+    };
+    renderWeather(previousCity.name);
+    console.log(previousCity.name);
 });
