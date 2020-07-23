@@ -1,8 +1,7 @@
 $(document).ready(function() {
-    let searchBtn = $(".search-btn");
     let previousCity = JSON.parse(localStorage.getItem("weather"));
 
-    searchBtn.on("click", renderWeather)
+    $(".search-btn").on("click", renderWeather)
     function renderWeather(town){
         forecastDates();
 
@@ -73,13 +72,13 @@ $(document).ready(function() {
                 let uvIndex = response.current.uvi;
                     $(".uv").text("UV Index: " + uvIndex);
 
-                // Severe, moderate, favorable
-                if (uvIndex >= 8.00) {
-                    $(".uv").css({"background-color": "rgb(206, 20, 3)", "border-radius": "15px", "max-width": "15%", "padding": "6px"});
-                } else if (uvIndex < 8.00) {
-                    $(".uv").css({"background-color": "rgb(221, 162, 0)", "border-radius": "15px", "max-width": "15%", "padding": "6px"});
-                } else if (uvIndex < 4.00) {
+                // Favorable, moderate, severe
+                if (uvIndex < 3) {
                     $(".uv").css({"background-color": "rgb(0, 175, 0)", "border-radius": "15px", "max-width": "15%", "padding": "6px"});
+                } else if (uvIndex > 3 && uvIndex < 5) {
+                    $(".uv").css({"background-color": "rgb(221, 162, 0)", "border-radius": "15px", "max-width": "15%", "padding": "6px"});
+                } else {
+                    $(".uv").css({"background-color": "rgb(206, 20, 3)", "border-radius": "15px", "max-width": "15%", "padding": "6px"});
                 }
 
                 // Day One
@@ -149,6 +148,7 @@ $(document).ready(function() {
                 localStorage.setItem("weather", JSON.stringify(cityStats));
             });
         });
+        $("#search-input").val("");
     };
     renderWeather(previousCity.name);
 });
