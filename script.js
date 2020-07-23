@@ -2,31 +2,24 @@ $(document).ready(function() {
     let searchBtn = $(".search-btn");
     let previousCity = JSON.parse(localStorage.getItem("weather"));
 
-    $("body").on("click", ".recent", function() {
-        let btnVal = event.target.value;
-        let btnClicked = $("#search-input").val(btnVal);
-        console.log(btnClicked);
-        renderWeather();
-    });
-
-    $(searchBtn).on("click", renderWeather)
+    searchBtn.on("click", renderWeather)
     function renderWeather(town){
         forecastDates();
 
-        // Recent Searches
+        // Recent history
         let city = $("#search-input").val().trim() || town;
         let firstLetter = city.charAt(0).toUpperCase();
         let string = city.slice(1);
-        let recentSearch = $(`<li id="${city}" class='recent list-group-item'>${firstLetter + string}</li>`);
-        previousCity = city;
+        let recentSearch = $(`<button id="${city}" class='recent list-group-item' value="${city}">${firstLetter + string}</button>`);
+            previousCity = city;
             $(".list-group").prepend(recentSearch);
 
-        // Not able to click on recent search and populate data
-        // $(recentSearch).on("click", function() {
-        //     let cityId = $(this).attr("id");
-        //     let city = cityId;
-        //     renderWeather(city);
-        // });
+        $("body").on("click", function(event) {
+            event.preventDefault();
+            let btnVal = event.target.value;
+            $("#search-input").val(btnVal);
+            renderWeather();
+        });
 
         // 5-Day Forecast
         function forecastDates() {
@@ -82,11 +75,11 @@ $(document).ready(function() {
 
                 // Severe, moderate, favorable
                 if (uvIndex >= 8.00) {
-                    $(".uv").css({"background-color": "rgb(206, 20, 3)", "border-radius": "15px", "width": "15%", "padding": "6px"});
+                    $(".uv").css({"background-color": "rgb(206, 20, 3)", "border-radius": "15px", "max-width": "15%", "padding": "6px"});
                 } else if (uvIndex < 8.00) {
-                    $(".uv").css({"background-color": "rgb(221, 162, 0)", "border-radius": "15px", "width": "15%", "padding": "6px"});
+                    $(".uv").css({"background-color": "rgb(221, 162, 0)", "border-radius": "15px", "max-width": "15%", "padding": "6px"});
                 } else if (uvIndex < 4.00) {
-                    $(".uv").css({"background-color": "rgb(0, 175, 0)", "border-radius": "15px", "width": "15%", "padding": "6px"});
+                    $(".uv").css({"background-color": "rgb(0, 175, 0)", "border-radius": "15px", "max-width": "15%", "padding": "6px"});
                 }
 
                 // Day One
